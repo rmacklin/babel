@@ -58,8 +58,7 @@ publish:
 bootstrap:
 	npm install
 	./node_modules/.bin/lerna bootstrap
-	# remove all existing babel-runtimes and use the top-level babel-runtime
-	rm -rf packages/*/node_modules/babel-runtime
 	make build
 	cd packages/babel-runtime; \
+	npm install; \
 	node scripts/build-dist.js
