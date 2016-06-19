@@ -66,7 +66,8 @@ export default function ({ types: t }) {
               return t.memberExpression(t.identifier("mod"), t.identifier("exports"));
             } else {
               let requireName = basename(arg.value, extname(arg.value));
-              let globalName = browserGlobals[requireName] || requireName;
+              let globalName = state.opts.useFullImportStringForGlobalName ? arg.value : requireName;
+              globalName = browserGlobals[globalName] || globalName;
 
               return t.memberExpression(t.identifier("global"), t.identifier(
                 t.toIdentifier(globalName)
