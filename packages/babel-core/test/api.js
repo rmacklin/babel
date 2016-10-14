@@ -133,6 +133,22 @@ suite("api", function () {
     assert.equal(babel.resolvePlugin(nonexistentPluginName), null);
   });
 
+  test("resolvePreset", function() {
+    var presetNameWithoutPrefix = 'es2015';
+    var presetNameWithPrefix = 'babel-preset-es2015';
+    var expectedResolvedPath = pathJoin(
+      __dirname,
+      '../../..',
+      'node_modules/babel-preset-es2015/lib/index.js'
+    );
+
+    assert.equal(babel.resolvePreset(presetNameWithoutPrefix), expectedResolvedPath);
+    assert.equal(babel.resolvePreset(presetNameWithPrefix), expectedResolvedPath);
+
+    var nonexistentPresetName = 'nonexistent-preset';
+    assert.equal(babel.resolvePreset(nonexistentPresetName), null);
+  });
+
   test("transformFile", function (done) {
     babel.transformFile(__dirname + "/fixtures/api/file.js", {}, function (err, res) {
       if (err) return done(err);
@@ -281,7 +297,7 @@ suite("api", function () {
           presets: ["@babel/es2015"]
         });
       },
-      /Couldn\'t find preset \"\@babel\/babel\-preset\-es2015\" relative to directory/
+      /Couldn\'t find preset \"\@babel\/es2015\" relative to directory/
     );
   });
 
@@ -292,7 +308,7 @@ suite("api", function () {
           presets: ["@babel/react/optimizations"]
         });
       },
-      /Couldn\'t find preset \"\@babel\/babel\-preset\-react\/optimizations\" relative to directory/
+      /Couldn\'t find preset \"\@babel\/react\/optimizations\" relative to directory/
     );
   });
 
