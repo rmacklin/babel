@@ -6,6 +6,7 @@ var assert               = require("assert");
 var File                 = require("../lib/transformation/file").default;
 var Plugin               = require("../lib/transformation/plugin");
 var generator            = require("babel-generator").default;
+var pathJoin             = require("path").join;
 
 function assertIgnored(result) {
   assert.ok(result.ignored);
@@ -114,6 +115,17 @@ suite("api", function () {
         path.mark("category", "foobar");
       }
     }).marked[0].message, "foobar");
+  });
+
+  test("resolve", function() {
+    var expectedResolvedPath = pathJoin(
+      __dirname,
+      '../../..',
+      'node_modules/babel-plugin-transform-es2015-arrow-functions/lib/index.js'
+    );
+
+    assert.equal(babel.resolve('babel-plugin-transform-es2015-arrow-functions'), expectedResolvedPath);
+    assert.equal(babel.resolve('nonexistent-plugin'), null);
   });
 
   test("transformFile", function (done) {
